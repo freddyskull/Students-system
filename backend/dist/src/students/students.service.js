@@ -32,11 +32,8 @@ let StudentsService = class StudentsService {
             }
         }
     }
-    findAll(skip = 0, take = 10) {
-        return this.prismaServices.students.findMany({
-            skip,
-            take,
-        });
+    findAll() {
+        return this.prismaServices.students.findMany();
     }
     async findOne(cedula) {
         const numericCedula = Number(cedula);
