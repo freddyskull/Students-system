@@ -28,8 +28,6 @@ export interface Students {
 export const HomePage = () => {
   const navigate = useNavigate(); 
 
-  // get the data for a datatable
-
   const [studentsData, setStudentsData] = useState<Students[]>([]);
 
   const [fearturedCardObject] = useState<FearturedCard[]>([
