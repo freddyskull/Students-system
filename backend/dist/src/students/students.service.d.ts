@@ -7,53 +7,53 @@ export declare class StudentsService {
     constructor(prismaServices: PrimasService);
     create(createStudentDto: CreateStudentDto): Promise<{
         cedula: number;
-        createdAt: Date;
-        updateAt: Date;
         name: string;
         lastName: string;
         year: number;
         secction: string;
+        createdAt: Date;
+        updateAt: Date;
     } | undefined>;
-    findAll(skip?: number, take?: number): Prisma.PrismaPromise<{
+    findAll(): Prisma.PrismaPromise<{
         cedula: number;
-        createdAt: Date;
-        updateAt: Date;
         name: string;
         lastName: string;
         year: number;
         secction: string;
+        createdAt: Date;
+        updateAt: Date;
     }[]>;
     findOne(cedula: number | string): Promise<{
         cedula: number;
-        createdAt: Date;
-        updateAt: Date;
         name: string;
         lastName: string;
         year: number;
         secction: string;
+        createdAt: Date;
+        updateAt: Date;
     }>;
     update(cedula: number | string, updateStudentDto: UpdateStudentDto): Promise<{
         message: string;
         data: {
             cedula: number;
-            createdAt: Date;
-            updateAt: Date;
             name: string;
             lastName: string;
             year: number;
             secction: string;
+            createdAt: Date;
+            updateAt: Date;
         };
     }>;
     remove(cedula: number | string): Promise<{
         message: string;
         data: {
             cedula: number;
-            createdAt: Date;
-            updateAt: Date;
             name: string;
             lastName: string;
             year: number;
             secction: string;
+            createdAt: Date;
+            updateAt: Date;
         };
     }>;
 }
