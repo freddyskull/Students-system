@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  PaginationState,
 } from '@tanstack/react-table';
 import {
   Table,
@@ -20,7 +23,8 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { EmptyState } from '@/app/components/emptyState';
 import { Students } from '@/app/home';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from './ui/pagination';
+import { Pagination, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from './ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 
 interface DatatableProps<T extends Students> {
@@ -44,37 +48,30 @@ export const Datatable = <T extends Students>({
   onAddTable,
 }: DatatableProps<T>) => {
   const [globalFilter, setGlobalFilter] = useState('');
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const filteredData = data.filter(row => {
-    const matchesGlobalFilter = Object.values(row).some(value =>
-      String(value).toLowerCase().includes(globalFilter.toLowerCase())
-    );
-
-    const createdAt = new Date(row.createdAt); // Ahora TypeScript reconoce 'createdAt'
-    const matchesDateFilter =
-      (!startDate || createdAt >= new Date(startDate)) &&
-      (!endDate || createdAt <= new Date(endDate));
-
-    return matchesGlobalFilter && matchesDateFilter;
-  });
-
-  const paginatedData = filteredData.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  
 
   const table = useReactTable({
-    data: paginatedData,
+    data, // Usar datos originales sin filtrar
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      globalFilter,
+      pagination
+    },
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   return (
-    <Card className="relative w-full h-[62vh] overflow-hidden">
+    <Card className="relative w-full h-[63vh] overflow-hidden">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="font-bold text-xl uppercase">
@@ -115,7 +112,7 @@ export const Datatable = <T extends Students>({
       <CardContent className="overflow-auto">
         <div className="w-full h-[40vh] overflow-auto">
           {table.getRowModel().rows.length > 0 ? (
-            <div>
+            <div className=''>
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -171,63 +168,64 @@ export const Datatable = <T extends Students>({
                   ))}
                 </TableBody>
               </Table>
-              <div className='right-0 bottom-2 left-0 absolute h-10'>
-                <div className='flex justify-between items-center px-6 h-full'>
-                  <div className='text-sm uppercase'>Total de items <b>{data.length}</b></div>
-                  <div>
-                    <Pagination>
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious
-                            href={page > 1 ? "#" : undefined}
-                            onClick={() => {
-                              if (page > 1) {
-                                setPage((prev) => Math.max(prev - 1, 1));
-                              }
-                            }}
-                            className={page === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-primary hover:rounded-full hover:text-white'}
-                          />
-                        </PaginationItem>
-                        {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, i) => i + 1)
-                          .filter((pageNum) => {
-                            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-                            return (
-                              pageNum === 1 ||
-                            pageNum === totalPages ||
-                            (pageNum >= page - 1 && pageNum <= page + 1)
-                            );
-                          })
-                          .map((pageNum, index, visiblePages) => (
-                            <React.Fragment key={pageNum}>
-                              {index > 0 && pageNum > visiblePages[index - 1] + 1 && (
-                                <PaginationItem>
-                                  <PaginationEllipsis />
-                                </PaginationItem>
-                              )}
-                              <PaginationItem>
-                                <PaginationLink
-                                  href="#"
-                                  onClick={() => setPage(pageNum)}
-                                  className={`pagination-link ${page === pageNum ? 'active bg-primary text-white hover:text-primary rounded-full font-bold' : ''}`}
-                                >
-                                  {pageNum}
-                                </PaginationLink>
-                              </PaginationItem>
-                            </React.Fragment>
+              <div className='right-0 bottom-5 left-0 absolute h-10'>
+                <div className="flex justify-between items-center gap-2 mx-auto px-4 py-2 container">
+                  <div className='flex items-center gap-2'>
+                    <span className="flex items-center gap-1">
+                      <div>Página</div>
+                      <strong>
+                        {table.getState().pagination.pageIndex + 1} de{' '}
+                        {table.getPageCount().toLocaleString()}
+                      </strong>
+                    </span>
+                    <Select
+                      onValueChange={(value) => table.setPageSize(Number(value))}
+                      defaultValue={String(table.getState().pagination.pageSize)}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Seleccionar tamaño" />
+                      </SelectTrigger>
+                      <SelectContent className="list-none"> {/* Eliminar bullets */}
+                        {[ 10, 20, 30, 40, 50].map(pageSize => (
+                          <SelectItem key={pageSize} value={String(pageSize)}>
+                            Mostrar {pageSize}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {
+                      // mostrar la paginacion si hay mas de 1 pagina
+                      table.getPageCount() > 1 && (
+                        <Pagination>
+                          {
+                            table.getCanPreviousPage() ? (
+                              <PaginationPrevious
+                                onClick={() => table.previousPage()}
+                                aria-disabled="false"
+                              />
+                            ) : null
+                          }
+                          {Array.from({ length: table.getPageCount() }, (_, index) => (
+                            <PaginationItem key={index} className={index === table.getState().pagination.pageIndex ? 'active' : ''}>
+                              <PaginationLink onClick={() => table.setPageIndex(index)}>
+                                {index + 1}
+                              </PaginationLink>
+                            </PaginationItem>
                           ))}
-                        <PaginationItem>
-                          <PaginationNext
-                            onClick={() => {
-                              if (page < Math.ceil(filteredData.length / itemsPerPage)) {
-                                setPage((prev) => Math.min(prev + 1, Math.ceil(filteredData.length / itemsPerPage)));
-                              }
-                            }}
-                            className='hover:bg-primary hover:rounded-full hover:text-white'
-                            href={page < Math.ceil(filteredData.length / itemsPerPage) ? "#" : undefined}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
+                          {
+                            table.getCanNextPage() ? (
+                              <PaginationNext
+                                onClick={() => table.nextPage()}
+                                aria-disabled="false"
+                              />
+                            ) : null
+                          }
+                      
+                        </Pagination>
+                      )
+                    }
                   </div>
                 </div>
               </div>
