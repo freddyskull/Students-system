@@ -27,8 +27,12 @@ async function main() {
     cedula: faker.number.int({ min: 10000000, max: 99999999 }),
     name: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    year: faker.number.int({ min: 1994, max: 2023 }),
+    year: faker.number.int({ min: 2000, max: 2023 }),
     secction: faker.string.alpha({ length: 1 }).toUpperCase(),
+    createdAt: faker.date.between({
+      from: new Date(2000, 0, 1),
+      to: new Date(),
+    }),
   }));
 
   try {
