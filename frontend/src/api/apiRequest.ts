@@ -1,14 +1,18 @@
 import { Students } from "@/app/home";
 import axiosInstance from "./axiosConnect";
 
+const handleError = (error: unknown) => {
+  window.location.href = "/error";
+  throw error;
+};
+
 // Obtener todos los estudiantes
 export const getStudents = async () => {
   try {
     const response = await axiosInstance.get("/students");
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los estudiantes:", error);
-    throw error;
+    handleError(error);
   }
 };
 
@@ -18,8 +22,7 @@ export const getStudentById = async (id: string) => {
     const response = await axiosInstance.get(`/students/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el estudiante con ID ${id}:`, error);
-    throw error;
+    handleError(error);
   }
 };
 
@@ -29,8 +32,7 @@ export const createStudent = async (studentData: Record<string, Students>) => {
     const response = await axiosInstance.post("/students", studentData);
     return response.data;
   } catch (error) {
-    console.error("Error al crear el estudiante:", error);
-    throw error;
+    handleError(error);
   }
 };
 

@@ -3,6 +3,7 @@ import LoginPage from './login/loginPage';
 import { HomePage } from './app/home';
 import { CreateStudent } from './app/createStudent';
 import { EditStudet } from './app/components/editStudet';
+import { ConecctionError } from './conecctionError';
 
 export const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ export const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/nuevo-estudiante" element={<CreateStudent />} />
         <Route path="/editar-estudiante/:id" element={<EditStudet />} />
+        <Route path="/error/" element={<ConecctionError />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>
