@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { FearturedCard } from "./components/fearturedCard"
 import { useState, useEffect } from "react";
-import { Datatable } from "@/components/datatable";
+import { Datatable } from "@/components/datable/datatable";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { NavHeader } from "./navHeader";
