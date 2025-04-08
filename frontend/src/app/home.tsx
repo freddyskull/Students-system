@@ -5,7 +5,7 @@ import { Datatable } from "@/components/datable/datatable";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { NavHeader } from "./navHeader";
-import { getStudents } from "@/api/apiRequest";
+import { deleteStudent, getStudents } from "@/api/apiRequest";
 
 export interface FearturedCard {
   title: string
@@ -21,8 +21,8 @@ export interface Students {
   lastName: string
   year: number
   secction: string
-  createdAt: Date
-  updateAt: Date
+  createdAt?: Date | string; 
+  updateAt?: Date
 }
 
 export const HomePage = () => {
@@ -89,9 +89,19 @@ export const HomePage = () => {
     }),
     columnHelper.accessor('createdAt', {
       header: () => <div className="text-center">Fecha de Creación</div>,
-      cell: info => <div className="text-center">
-        <Badge variant='outline'>{new Date(info.getValue()).toLocaleDateString()}</Badge>
-      </div>,
+      cell: info => {
+        const createdAtValue = info.getValue();
+        let formattedDate: string | null = null;
+        if (createdAtValue) {
+          formattedDate =
+            typeof createdAtValue === 'string'
+              ? new Date(createdAtValue).toLocaleDateString()
+              : createdAtValue.toLocaleDateString();
+        }
+        return <div className="text-center">
+          <Badge variant='outline'>{formattedDate || '-'}</Badge>
+        </div>;
+      },
     }),
   ];
 
@@ -110,6 +120,16 @@ export const HomePage = () => {
     },
   ];
 
+  const onDeleteHandled = (row: Students) => {
+    deleteStudent(row.cedula)
+      .then(() => {
+        setStudentsData((prev) => prev.filter((student) => student.cedula !== row.cedula));
+      })
+      .catch((error) => {
+        console.error("Error al eliminar el estudiante:", error);
+      });
+  }
+
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -119,7 +139,6 @@ export const HomePage = () => {
         console.error("Error al obtener los datos de estudiantes:", error);
       }
     };
-
     fetchStudents();
   }, []);
 
@@ -144,7 +163,7 @@ export const HomePage = () => {
             columns={columns} 
             data={studentsData} 
             tableTitle="Datos de Estudiantes" 
-            onDelete={(row) => console.log('Delete', row)} 
+            onDelete={onDeleteHandled} 
             onEdit={(row) => { navigate(`/editar-estudiante/${row.cedula}`) }} 
             additionalActions={additionalActions} 
             onAddTable={{ label: "Estudiante", onClick: () => {navigate("/nuevo-estudiante")} }} />

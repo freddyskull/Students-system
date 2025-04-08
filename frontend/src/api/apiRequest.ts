@@ -27,7 +27,7 @@ export const getStudentById = async (id: string) => {
 };
 
 // Crear un nuevo estudiante
-export const createStudent = async (studentData: Record<string, Students>) => {
+export const createStudent = async (studentData: Students) => {
   try {
     const response = await axiosInstance.post("/students", studentData);
     return response.data;
@@ -37,12 +37,9 @@ export const createStudent = async (studentData: Record<string, Students>) => {
 };
 
 // Actualizar un estudiante por ID
-export const updateStudent = async (
-  id: string,
-  studentData: Record<string, Students>
-) => {
+export const updateStudent = async (id: number, studentData: Students) => {
   try {
-    const response = await axiosInstance.put(`/students/${id}`, studentData);
+    const response = await axiosInstance.patch(`/students/${id}`, studentData);
     return response.data;
   } catch (error) {
     console.error(`Error al actualizar el estudiante con ID ${id}:`, error);
@@ -51,7 +48,7 @@ export const updateStudent = async (
 };
 
 // Eliminar un estudiante por ID
-export const deleteStudent = async (id: string) => {
+export const deleteStudent = async (id: number) => {
   try {
     const response = await axiosInstance.delete(`/students/${id}`);
     return response.data;

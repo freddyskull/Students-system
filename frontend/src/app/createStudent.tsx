@@ -2,16 +2,17 @@ import { NavHeader } from './navHeader'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useNavigate } from 'react-router-dom'
+import { createStudent, getStudentById, updateStudent } from '@/api/apiRequest'
+import { Students } from './home'
+
 
 
 export const CreateStudent = ({ studentId }: { studentId?: number }) => {
   const navigate = useNavigate(); 
   
-  console.log(studentId)
-
   const secctionOptions = [
     { value: 'A', label: 'A' },
     { value: 'B', label: 'B' },
@@ -20,18 +21,40 @@ export const CreateStudent = ({ studentId }: { studentId?: number }) => {
   ]
   const [selectedSection, setSelectedSection] = useState('A');
   const handleSubmit = () => {
-    const studentData = {
+    const studentData:Students = {
       cedula: parseInt((document.getElementById('cedula') as HTMLInputElement).value, 10),
       name: (document.getElementById('name') as HTMLInputElement).value,
       lastName: (document.getElementById('lastName') as HTMLInputElement).value,
       year: parseInt((document.getElementById('year') as HTMLInputElement).value, 10),
-      section: selectedSection,
+      secction: selectedSection,
     };
-    console.log(studentData);
-    
-    // Redireccionar a la página de inicio después de crear el estudiante
-    // window.location.href = '/';
+
+    if(studentId){
+      updateStudent(studentId, studentData).then(() => {
+        navigate('/');
+      }).catch((error) => {
+        console.error("Hubo un error al editar al estudiante: ", error);
+      });
+    }else{
+      createStudent(studentData).then(() => {
+        navigate('/');
+      }).catch((error) => {
+        console.error("Hubo un error al crear al estudiante: ", error);
+      });
+    }
   }
+
+  useEffect(() => {
+      if(studentId){
+        getStudentById(studentId.toString()).then((student) => {
+          (document.getElementById('cedula') as HTMLInputElement).value = student.cedula.toString();
+          (document.getElementById('name') as HTMLInputElement).value = student.name;
+          (document.getElementById('lastName') as HTMLInputElement).value = student.lastName;
+          (document.getElementById('year') as HTMLInputElement).value = student.year.toString();
+          setSelectedSection(student.secction);
+        });
+      }
+    }, [])
     
 
   return (
