@@ -59,7 +59,7 @@ export const Datatable = <T extends Students>({
   const filteredData = useMemo(() => {
     if (!dateRange.startDate && !dateRange.endDate) return data;
     return data.filter((row) => {
-      const createdAt = new Date(row.createdAt); 
+      const createdAt = row.createdAt ? new Date(row.createdAt) : new Date(0); 
       const startDate = dateRange.startDate ? new Date(dateRange.startDate) : new Date(-8640000000000000);
       const endDate = dateRange.endDate ? new Date(dateRange.endDate) : new Date(8640000000000000);
       return createdAt >= startDate && createdAt <= endDate;
@@ -81,16 +81,16 @@ export const Datatable = <T extends Students>({
   });
 
   return (
-    <Card className="relative w-full h-[63vh] overflow-hidden">
+    <Card className="relative w-full h-[95vh] md:h-[63vh] overflow-hidden">
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex md:flex-row flex-col justify-between items-center gap-2">
           <CardTitle className="font-bold text-xl uppercase">
             {tableTitle}
           </CardTitle>
           <Button onClick={() => { onAddTable?.onClick(); }}>Nuevo {onAddTable?.label}</Button>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <div className="gap-8 grid grid-cols-2 w-full">
+          <div className="gap-8 grid grid-cols-1 md:grid-cols-2 w-full">
             <div className='flex gap-2 w-full'>
               <Input
                 type="text"
@@ -99,9 +99,11 @@ export const Datatable = <T extends Students>({
                 onChange={(e) => setGlobalFilter(e.target.value)}
                 className="px-2 py-1 border rounded text-sm"
               />
-              <Button variant="outline" onClick={() => setGlobalFilter('')}>Limpiar</Button>
+              <div className='hidden md:block'>
+                <Button variant="outline" onClick={() => setGlobalFilter('')}>Limpiar</Button>
+              </div>
             </div>
-            <div className='flex gap-2 w-full'>
+            <div className='flex gap-2 w-full overflow-hidden'>
               <Input
                 type="date"
                 placeholder="Fecha inicial"
@@ -116,9 +118,11 @@ export const Datatable = <T extends Students>({
                 onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
                 className="px-2 py-1 border rounded text-sm"
               />
-              <Button variant="outline" onClick={() => setDateRange({ startDate: '', endDate: '' })}>
-                Limpiar
-              </Button>
+              <div className='hidden md:block'>
+                <Button variant="outline" onClick={() => setDateRange({ startDate: '', endDate: '' })}>
+                  Limpiar
+                </Button>
+              </div>
             </div>
           </div>
         </div>

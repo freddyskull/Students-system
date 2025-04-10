@@ -1,6 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Pagination, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
-import { useReactTable } from '@tanstack/react-table';
 
 export interface PaginationTableProps {
   table: any;
@@ -10,9 +9,9 @@ export const PaginationTable = ({
   table,
 }: PaginationTableProps) => {
   return (
-    <div className="right-0 bottom-5 left-0 absolute h-10">
-      <div className="flex justify-between items-center gap-2 mx-auto px-4 py-2 container">
-        <div className="flex items-center gap-2">
+    <div className="right-0 bottom-0 md:bottom-5 left-0 absolute md:h-10">
+      <div className="flex md:flex-row flex-col justify-between items-center gap-2 mx-auto px-4 py-2 container">
+        <div className="flex md:flex-row flex-col items-center gap-2">
           <span className="flex items-center gap-1">
             <div>Página</div>
             <strong>
