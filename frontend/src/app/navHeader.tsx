@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 
 export const NavHeader = () => {
@@ -11,8 +11,10 @@ export const NavHeader = () => {
               <span className="font-bold text-2xl uppercase">LOGO</span>
             </Link>
           </div>
-          <div>
-            <Button variant='outline'>Cerrar Sesión</Button>
+          <div className='overflow-hidden'>
+            <Link to="/login" className={`mr-2 ${buttonVariants()}`}>
+              Cerra sesión
+            </Link>
           </div>
         </div>
       </div>

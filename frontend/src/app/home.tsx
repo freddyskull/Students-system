@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { FearturedCard } from "./components/fearturedCard"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Datatable } from "@/components/datable/datatable";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { NavHeader } from "./navHeader";
 import { deleteStudent, getStudents } from "@/api/apiRequest";
+import { ConstanciaStudios } from "./components/constanciaStudios";
+import { pdf } from "@react-pdf/renderer";
+import { Boleta } from "./components/boletRetiroStudent";
+
 
 export interface FearturedCard {
   title: string
@@ -107,17 +111,13 @@ export const HomePage = () => {
 
   const additionalActions = [
     {
+      label: "Boleta de retiro",
+      onClick: (row: Students) => generatedBoleta(row),
+    },
+    {
       label: "constancia de estudios",
-      onClick: (row: Students) => console.log("constancia de estudios", row),
-    },
-    {
-      label: "Constancia inscripción",
-      onClick: (row: Students) => console.log("Constancia de inscripción", row),
-    },
-    {
-      label: "Constancia retiro",
-      onClick: (row: Students) => console.log("Constancia de retiro", row),
-    },
+      onClick: (row: Students) => generatedConstancia(row),
+    }
   ];
 
   const onDeleteHandled = (row: Students) => {
@@ -142,10 +142,37 @@ export const HomePage = () => {
     fetchStudents();
   }, []);
 
+
+  const generatedConstancia = useCallback(async (data:Students) => {
+    const blob = await pdf(<ConstanciaStudios  student={data} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'datos.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+  }, []);
+
+  const generatedBoleta = useCallback(async (data:Students) => {
+    const blob = await pdf(<Boleta  student={data} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'datos.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+  }, []);
+
+
+
   return (
     <main className="">
       <NavHeader />
-      <div id="content" className="bg-blue-50 w-full h-[90vh]">
+      <div id="content" className="bg-blue-50 w-full md:h-[90vh]">
         <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-4 mx-auto pt-8 container">
           {fearturedCardObject.map((card, index) => (
             <FearturedCard
