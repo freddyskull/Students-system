@@ -81,7 +81,7 @@ export const Datatable = <T extends Students>({
   });
 
   return (
-    <Card className="relative w-full h-[95vh] md:h-[63vh] overflow-hidden">
+    <Card className="relative w-full h-[95vh] md:h-[86vh] overflow-hidden">
       <CardHeader>
         <div className="flex md:flex-row flex-col justify-between items-center gap-2">
           <CardTitle className="font-bold text-xl uppercase">
@@ -127,8 +127,8 @@ export const Datatable = <T extends Students>({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="overflow-auto">
-        <div className="w-full h-[40vh] overflow-auto">
+      <CardContent className="h-[80%] overflow-auto">
+        <div className="w-full">
           {table.getRowModel().rows.length > 0 ? (
             <div className=''>
               <Table>

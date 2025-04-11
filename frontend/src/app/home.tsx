@@ -173,7 +173,7 @@ export const HomePage = () => {
     <main className="">
       <NavHeader />
       <div id="content" className="bg-blue-50 w-full md:h-[90vh]">
-        <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-4 mx-auto pt-8 container">
+        {/* <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-4 mx-auto pt-8 container">
           {fearturedCardObject.map((card, index) => (
             <FearturedCard
               key={index}
@@ -184,8 +184,8 @@ export const HomePage = () => {
               contentValue={card.contentValue}
             />
           ))}
-        </div>
-        <div id="datable" className="mx-auto mt-8 container">
+        </div> */}
+        <div id="datable" className="mx-auto pt-8 container">
           <Datatable 
             columns={columns} 
             data={studentsData} 
