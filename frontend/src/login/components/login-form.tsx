@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { loginApi } from "@/api/apiRequest"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
 
 export function LoginForm({
   className,
@@ -13,20 +15,24 @@ export function LoginForm({
   const [cedula, setCedula] = useState("")
   const [password, setPassword] = useState("")
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     loginApi(cedula, password)
       .then((response) => {
-        console.log("Inicio de sesión exitoso:", response)
-        // Redirigir o mostrar un mensaje de éxito
+        toast.success("Inicio de sesión exitoso", {
+          description: `Bienvenido de nuevo "${response.user.userName}" `,
+        })
+        sessionStorage.setItem("auth", JSON.stringify(response.user));
+        navigate("/home")
       })
       .catch((error) => {
-        console.error("Error al iniciar sesión:", error)
-        // Mostrar un mensaje de error al usuario
-      }
-    )
+        toast.error(error.response.data.message, {
+          description: "Por favor, verifica tu cédula y contraseña.",
+        })
+      })
   }
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="shadow-2xl p-0 overflow-hidden">
@@ -34,9 +40,9 @@ export function LoginForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="font-bold text-2xl uppercase">Benvenido devuelta</h1>
+                <h1 className="font-bold text-2xl uppercase">Iniciar Sesión</h1>
                 <p className="text-muted-foreground text-balance">
-                  Inicia sesión introduciendo tu cuenta
+                  Hola, introduciendo tu cédula y contraseña
                 </p>
               </div>
               <div>

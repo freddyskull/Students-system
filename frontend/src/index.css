@@ -13,6 +13,10 @@
   }
 }
 
+[data-sonner-toaster][data-sonner-theme="dark"] [data-description] {
+  color: #414141 !important;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
