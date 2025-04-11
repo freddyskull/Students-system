@@ -46,6 +46,7 @@ npm install
 3. **Ejecuta el proyecto**:
 
    - **Backend**:
+
      1. Generar el archivo .env, dentro del proyecto existe un archivo de ejemplo llamado .env-example el cual se puede copiar y renombrar como .env.
      2. Genera la base de datos con Prisma usando el comando `npx prisma migrate dev`.
      3. (Opcional) Genera datos de ejemplo con `npm run seed`.
@@ -72,6 +73,12 @@ npm run dev
 4. **Accede a la aplicación** desde tu navegador:
    - Frontend: `http://localhost:3000`
    - Backend: `http://localhost:4000`
+
+## Iniciar Sesión
+
+Usuario por defecto
+Cédula: `12345678`
+Contraseña: `defaultPassword123`
 
 ## Contribuciones
 

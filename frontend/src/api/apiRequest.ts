@@ -57,3 +57,27 @@ export const deleteStudent = async (id: number) => {
     throw error;
   }
 };
+
+// iniciar sesion con cedula y contraseña
+export const loginApi = async (cedula: string, password: string) => {
+  try {
+    const response = await axiosInstance.post("/users/login", {
+      cedula,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    throw error;
+  }
+};
+// registrar un nuevo usuario
+export const registerApi = async (userData: any) => {
+  try {
+    const response = await axiosInstance.post("/register", userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    throw error;
+  }
+};

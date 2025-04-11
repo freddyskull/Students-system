@@ -9,11 +9,11 @@ export const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/nuevo-estudiante" element={<CreateStudent />} />
         <Route path="/editar-estudiante/:id" element={<EditStudet />} />
         <Route path="/error/" element={<ConecctionError />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
   );
