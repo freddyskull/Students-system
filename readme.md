@@ -46,10 +46,10 @@ npm install
 3. **Ejecuta el proyecto**:
 
    - **Backend**:
-
-     1. Genera la base de datos con Prisma usando el comando `npx prisma migrate dev`.
-     2. (Opcional) Genera datos de ejemplo con `npm run seed`.
-     3. Inicia el servidor con `npm start`. El backend estará disponible en el puerto `4000`.
+     1. Generar el archivo .env, dentro del proyecto existe un archivo de ejemplo llamado .env-example el cual se puede copiar y renombrar como .env.
+     2. Genera la base de datos con Prisma usando el comando `npx prisma migrate dev`.
+     3. (Opcional) Genera datos de ejemplo con `npm run seed`.
+     4. Inicia el servidor con `npm start`. El backend estará disponible en el puerto `4000`.
 
    - **Frontend**:
      1. Instala las dependencias con `npm install`.
@@ -58,7 +58,7 @@ npm install
 **Comandos para el backend**:
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate dev --name init
 npm run seed
 npm start
 ```
