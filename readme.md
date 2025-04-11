@@ -1,4 +1,7 @@
 <p align="center">
+  <img src="public/tec-dev.png" alt="Tecnologías utilizadas">
+</p>
+<p align="center">
   <img src="https://drive.google.com/drive-viewer/AKGpihY8qSP3mAf6RqDp0mAT8UTYqI92Ait2NRczd6v32Jph123gKlO2bdJZQADu4abhEbFj8iM5YbxvLLHhV9BOc0Ufy38FqntXRE4=w1920-h925" alt="Tecnologías utilizadas">
 </p>
 
