@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/dev-tec.png" alt="Tecnologías utilizadas">
+  <img src="https://drive.google.com/file/d/1pDi67DssSmcEmDfgUe-hPwOAQbcqkcXq/view?usp=sharing" alt="Tecnologías utilizadas">
 </p>
 
 # Tecnologías utilizadas
