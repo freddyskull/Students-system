@@ -91,25 +91,36 @@ export class UsersService {
     };
   }
 
-  async login(cedula: number, password: string) {
-    const user = await this.prismaServices.users.findUnique({
-      where: { cedula },
-    });
+  async login(cedula: number | string, password: string) {
+    try {
+      const user = await this.prismaServices.users.findUnique({
+        where: {
+          cedula: typeof cedula === 'string' ? parseInt(cedula) : cedula,
+        },
+      });
 
-    if (!user) {
+      if (!user) {
+        throw new UnauthorizedException('Credenciales inválidas');
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Credenciales inválidas');
+      }
+
+      const { password: _, ...userWithoutPassword } = user; // Excluir el campo password
+      return {
+        message: 'Inicio de sesión exitoso',
+        user: userWithoutPassword,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ConflictException('Error de conflicto en la base de datos');
+        }
+      }
       throw new UnauthorizedException('Credenciales inválidas');
     }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
-
-    const { password: _, ...userWithoutPassword } = user; // Excluir el campo password
-    return {
-      message: 'Inicio de sesión exitoso',
-      user: userWithoutPassword,
-    };
   }
 
   async remove(id: string) {

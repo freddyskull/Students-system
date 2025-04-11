@@ -80,7 +80,7 @@ __decorate([
     __param(0, (0, common_1.Body)('cedula')),
     __param(1, (0, common_1.Body)('password')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
 exports.UsersController = UsersController = __decorate([

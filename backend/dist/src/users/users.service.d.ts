@@ -47,7 +47,7 @@ export declare class UsersService {
             updateAt: Date;
         };
     }>;
-    login(cedula: number, password: string): Promise<{
+    login(cedula: number | string, password: string): Promise<{
         message: string;
         user: {
             id: string;

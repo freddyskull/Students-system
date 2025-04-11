@@ -42,7 +42,7 @@ export class UsersController {
 
   @Post('login')
   async login(
-    @Body('cedula') cedula: number,
+    @Body('cedula') cedula: number | string,
     @Body('password') password: string,
   ) {
     return this.usersService.login(cedula, password);
