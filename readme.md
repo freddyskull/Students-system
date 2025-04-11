@@ -77,8 +77,8 @@ npm run dev
 ## Iniciar Sesión
 
 Usuario por defecto
-Cédula: `12345678`
-Contraseña: `defaultPassword123`
+- Cédula: `12345678`
+- Contraseña: `defaultPassword123`
 
 ## Contribuciones
 
