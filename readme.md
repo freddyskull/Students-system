@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://drive.google.com/file/d/1pDi67DssSmcEmDfgUe-hPwOAQbcqkcXq/view?usp=sharing" alt="Tecnologías utilizadas">
+  <img src="https://drive.google.com/drive-viewer/AKGpihY8qSP3mAf6RqDp0mAT8UTYqI92Ait2NRczd6v32Jph123gKlO2bdJZQADu4abhEbFj8iM5YbxvLLHhV9BOc0Ufy38FqntXRE4=w1920-h925" alt="Tecnologías utilizadas">
 </p>
 
 # Tecnologías utilizadas
